@@ -6,7 +6,7 @@ const ROLES = [
   {
     icon: LayoutDashboard,
     role: "Admins",
-    blurb: "Run the whole portfolio — people, projects, and reporting — from one dashboard.",
+    blurb: "Run the whole portfolio: people, projects, and reporting from one dashboard.",
     points: [
       "Create projects and invite collaborators",
       "Manage users across every role",

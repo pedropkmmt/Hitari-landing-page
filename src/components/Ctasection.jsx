@@ -17,7 +17,7 @@ export default function CtaSection() {
           Put your next inspection on the record.
         </h2>
         <p className="mt-5 text-base leading-relaxed" style={{ color: FOG }}>
-          Book a 20-minute walkthrough with real project data — we'll show the
+          Book a 20-minute walkthrough with real project data, we'll show the
           admin, insurer, and engineer views side by side.
         </p>
         <div className="mt-9 flex justify-center">

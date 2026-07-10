@@ -5,7 +5,7 @@ import { Eyebrow } from "../utils/Landingprimitives";
 const REASONS = [
   [
     "Role-scoped access",
-    "Admins, insurers, and engineers each see precisely what their role permits — nothing more.",
+    "Admins, insurers, and engineers each see precisely what their role permits, nothing more.",
   ],
   [
     "Evidence with provenance",
@@ -36,7 +36,7 @@ export default function TrustSection() {
           <p className="mt-6 text-base leading-relaxed max-w-md" style={{ color: FOG }}>
             Inspection records scattered across inboxes and shared drives are a
             liability the day a claim arrives. Hitari keeps the visit, the
-            evidence, the report, and the signature in one chain — scoped to
+            evidence, the report, and the signature in one chain , scoped to
             exactly who is allowed to see it.
           </p>
         </div>

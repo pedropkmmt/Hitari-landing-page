@@ -1,13 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import InspectionTower from "./Inspectiontower";
-import { GOLD, LINE, FOG, DISPLAY_FONT } from "./Landingtokens";
-import { Eyebrow, GoldButton, GhostButton } from "./Landingprimitives";
+import { GOLD, LINE, FOG, DISPLAY_FONT } from "../utils/Landingtokens";
+import { Eyebrow, GoldButton, GhostButton } from "../utils/Landingprimitives";
 
 export default function HeroSection() {
   return (
     <section className="relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 pt-16 pb-20 md:pt-24 md:pb-28 grid md:grid-cols-2 gap-12 items-center">
-        {/* Copy */}
         <div>
           <Eyebrow>Site inspection, insured</Eyebrow>
           <h1
@@ -20,7 +19,7 @@ export default function HeroSection() {
           </h1>
           <p className="mt-6 text-base md:text-lg leading-relaxed max-w-md" style={{ color: FOG }}>
             Hitari connects insurers, project admins, and site engineers on one
-            platform — scheduled visits, photo evidence, signed reports, and a
+            platform: scheduled visits, photo evidence, signed reports, and a
             live risk picture for every project you cover.
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-4">

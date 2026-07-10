@@ -1,126 +1,150 @@
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
+
+/* Geometry  */
+const FLOOR_H = 34;
+const FLOORS = [
+  // width, depth per floor, bottom , top
+  [170, 125], [170, 125], [170, 125],
+  [135, 100], [135, 100], [135, 100],
+  [100, 78], [100, 78], [100, 78],
+];
+const TOWER_H = FLOORS.length * FLOOR_H; // 306px
+
+const EDGE = "rgba(96, 110, 134, 0.5)";
+const GOLD = "#CCA030";
+
+const centered = (w, h) => ({
+  position: "absolute",
+  left: 0,
+  top: 0,
+  width: w,
+  height: h,
+  marginLeft: -w / 2,
+  marginTop: -h / 2,
+});
+
+/** wireframe floor */
+function Floor({ w, d, yCenter }) {
+  const faces = [
+    [w, 0, d / 2],    // front
+    [w, 180, d / 2],  // back
+    [d, 90, w / 2],   // right
+    [d, -90, w / 2],  // left
+  ];
+  return faces.map(([fw, ry, tz], i) => (
+    <div
+      key={i}
+      style={{
+        ...centered(fw, FLOOR_H),
+        border: `1px solid ${EDGE}`,
+        transform: `translateY(${-yCenter}px) rotateY(${ry}deg) translateZ(${tz}px)`,
+      }}
+    />
+  ));
+}
+
+function CornerNodes({ w, d, yTop }) {
+  const corners = [
+    [-w / 2, -d / 2], [w / 2, -d / 2],
+    [-w / 2, d / 2], [w / 2, d / 2],
+  ];
+  return corners.map(([x, z], i) => (
+    <div
+      key={i}
+      className="tower-node"
+      style={{
+        ...centered(4, 4),
+        borderRadius: "50%",
+        background: GOLD,
+        transform: `translate3d(${x}px, ${-yTop}px, ${z}px)`,
+      }}
+    />
+  ));
+}
 
 export default function InspectionTower() {
-  const mountRef = useRef(null);
+  return (
+    <div
+      className="w-full h-full flex items-center justify-center overflow-hidden"
+      aria-hidden="true"
+      style={{ perspective: "1000px" }}
+    >
+      <style>{`
+        @keyframes tower-spin {
+          from { transform: rotateY(0deg); }
+          to   { transform: rotateY(360deg); }
+        }
+        @keyframes tower-sweep {
+          0%, 100% { transform: translateY(-10px); }
+          50%      { transform: translateY(${-(TOWER_H - 10)}px); }
+        }
+        @keyframes tower-glow {
+          0%, 100% { opacity: 0.55; }
+          50%      { opacity: 0.95; }
+        }
+        @keyframes tower-node-pulse {
+          0%, 100% { opacity: 0.35; }
+          50%      { opacity: 0.85; }
+        }
+        .tower-group { animation: tower-spin 46s linear infinite; }
+        .tower-sweep { animation: tower-sweep 9s ease-in-out infinite; }
+        .tower-ring  { animation: tower-glow 2.4s ease-in-out infinite; }
+        .tower-node  { animation: tower-node-pulse 3s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .tower-group, .tower-sweep, .tower-ring, .tower-node { animation: none; }
+          .tower-sweep { transform: translateY(${-TOWER_H / 2}px); } /* park mid-height */
+        }
+      `}</style>
 
-  useEffect(() => {
-    const mount = mountRef.current;
-    if (!mount) return;
+      {/* Stage */}
+      <div
+        style={{
+          transformStyle: "preserve-3d",
+          transform: `rotateX(18deg) translateY(${TOWER_H * 0.42}px)`,
+        }}
+      >
+        <div
+          className="tower-group"
+          style={{ position: "relative", width: 0, height: 0, transformStyle: "preserve-3d" }}
+        >
+          {/* Floors */}
+          {FLOORS.map(([w, d], i) => (
+            <Floor key={`f${i}`} w={w} d={d} yCenter={i * FLOOR_H + FLOOR_H / 2} />
+          ))}
 
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+          {/* Corner nodes */}
+          {FLOORS.map(([w, d], i) => (
+            <CornerNodes key={`n${i}`} w={w} d={d} yTop={(i + 1) * FLOOR_H} />
+          ))}
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      38,
-      mount.clientWidth / mount.clientHeight,
-      0.1,
-      100
-    );
-    camera.position.set(6.2, 4.6, 8.4);
-    camera.lookAt(0, 2.4, 0);
+          {/* Inspection sweep */}
+          <div className="tower-sweep" style={{ transformStyle: "preserve-3d" }}>
+            <div
+              className="tower-ring"
+              style={{
+                ...centered(230, 230),
+                borderRadius: "50%",
+                border: `2.5px solid ${GOLD}`,
+                boxShadow: "0 0 16px rgba(204,160,48,0.4)",
+                transform: "rotateX(90deg)",
+              }}
+            />
+          </div>
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(mount.clientWidth, mount.clientHeight);
-    mount.appendChild(renderer.domElement);
-
-    const group = new THREE.Group();
-    scene.add(group);
-
-    const slabMat = new THREE.LineBasicMaterial({
-      color: 0x3b4657,
-      transparent: true,
-      opacity: 0.9,
-    });
-    const floors = 9;
-    const floorH = 0.62;
-    const nodePositions = [];
-
-    for (let i = 0; i < floors; i++) {
-
-      const w = i < 3 ? 3.0 : i < 6 ? 2.4 : 1.8;
-      const d = i < 3 ? 2.2 : i < 6 ? 1.8 : 1.4;
-      const geo = new THREE.BoxGeometry(w, floorH, d);
-      const edges = new THREE.EdgesGeometry(geo);
-      const lines = new THREE.LineSegments(edges, slabMat.clone());
-      lines.position.y = i * floorH + floorH / 2;
-      group.add(lines);
-
-      const y = i * floorH + floorH;
-      [
-        [-w / 2, y, -d / 2],
-        [w / 2, y, -d / 2],
-        [-w / 2, y, d / 2],
-        [w / 2, y, d / 2],
-      ].forEach((p) => nodePositions.push(p));
-    }
-
-    const nodeGeo = new THREE.BufferGeometry();
-    nodeGeo.setAttribute(
-      "position",
-      new THREE.Float32BufferAttribute(nodePositions.flat(), 3)
-    );
-    const nodeMat = new THREE.PointsMaterial({
-      color: 0xcca030,
-      size: 0.09,
-      transparent: true,
-      opacity: 0.35,
-    });
-    group.add(new THREE.Points(nodeGeo, nodeMat));
-
-    const ringGeo = new THREE.RingGeometry(2.35, 2.42, 64);
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: 0xcca030,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.85,
-    });
-    const ring = new THREE.Mesh(ringGeo, ringMat);
-    ring.rotation.x = -Math.PI / 2;
-    group.add(ring);
-
-    scene.add(new THREE.GridHelper(14, 20, 0x2a3342, 0x1b2230));
-
-    let frame = 0;
-    let raf;
-    const towerTop = floors * floorH;
-
-    const animate = () => {
-      raf = requestAnimationFrame(animate);
-      frame += 1;
-
-      if (!prefersReduced) {
-        group.rotation.y += 0.0028;
-        const t = (Math.sin(frame * 0.012) + 1) / 2; // 0..1 oscillation
-        ring.position.y = 0.2 + t * (towerTop - 0.2);
-        ringMat.opacity = 0.6 + 0.3 * Math.sin(frame * 0.05);
-      } else {
-        ring.position.y = towerTop * 0.55;
-      }
-
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    const onResize = () => {
-      const w = mount.clientWidth;
-      const h = mount.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    };
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", onResize);
-      renderer.dispose();
-      mount.removeChild(renderer.domElement);
-    };
-  }, []);
-
-  return <div ref={mountRef} className="w-full h-full" aria-hidden="true" />;
+          {/* Ground grid */}
+          <div
+            style={{
+              ...centered(460, 460),
+              transform: "rotateX(90deg)",
+              backgroundImage: `
+                repeating-linear-gradient(0deg, rgba(58,70,90,0.55) 0 1px, transparent 1px 34px),
+                repeating-linear-gradient(90deg, rgba(58,70,90,0.55) 0 1px, transparent 1px 34px)
+              `,
+              WebkitMaskImage: "radial-gradient(circle, black 30%, transparent 72%)",
+              maskImage: "radial-gradient(circle, black 30%, transparent 72%)",
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
 }

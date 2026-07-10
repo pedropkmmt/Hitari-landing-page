@@ -6,7 +6,7 @@ const STEPS = [
   {
     icon: HardHat,
     label: "Schedule the visit",
-    text: "Engineers book site visits against a project — date, type, and scope — straight from their calendar.",
+    text: "Engineers book site visits against a project: date, type, and scope straight from their calendar.",
   },
   {
     icon: Camera,
@@ -16,7 +16,7 @@ const STEPS = [
   {
     icon: FileBarChart,
     label: "File the report",
-    text: "Findings, KPIs, and challenges roll into a structured report — entered manually or uploaded.",
+    text: "Findings, KPIs, and challenges roll into a structured report entered manually or uploaded.",
   },
   {
     icon: PenLine,

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { GOLD, INK, LINE, FOG, DISPLAY_FONT } from "./Landingtokens";
-import { GoldButton } from "./Landingprimitives";
+import { GOLD, INK, LINE, FOG, DISPLAY_FONT } from "../utils/Landingtokens";
+import { GoldButton } from "../utils/Landingprimitives";
 
 export function LogoMark({ size = 32 }) {
   return (

@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
-import { STEEL, LINE, FOG, DISPLAY_FONT } from "./Landingtokens";
-import { GoldButton } from "./Landingprimitives";
+import { STEEL, LINE, FOG, DISPLAY_FONT } from "../utils/Landingtokens";
+import { GoldButton } from "../utils/Landingprimitives";
 
 export default function CtaSection() {
   return (

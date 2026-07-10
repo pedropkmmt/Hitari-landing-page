@@ -1,11 +1,11 @@
-import { INK, BODY_FONT } from "./Landingtokens";
-import LandingNavbar from "./Landingnavbar";
-import HeroSection from "./Herosection";
-import RolesSection from "./Rolessection";
-import WorkflowSection from "./Workflowsection";
-import TrustSection from "./Trustsection";
-import CtaSection from "./Ctasection";
-import LandingFooter from "./Landingfooter";
+import { INK, BODY_FONT } from "../utils/Landingtokens";
+import LandingNavbar from "../layout/Landingnavbar";
+import HeroSection from "../components/Herosection";
+import RolesSection from "../components/Rolessection";
+import WorkflowSection from "../components/Workflowsection";
+import TrustSection from "../components/Trustsection";
+import CtaSection from "../components/Ctasection";
+import LandingFooter from "../layout/Landingfooter";
 
 export default function LandingPage() {
   return (

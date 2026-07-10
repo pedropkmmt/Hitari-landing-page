@@ -1,11 +1,6 @@
-/**
- * WorkflowSection — the four-step visit lifecycle
- * (schedule → capture → report → sign), mirroring the useVisits flow
- * in the app. Steps are data-driven via the STEPS array.
- */
 import { HardHat, Camera, FileBarChart, PenLine } from "lucide-react";
-import { GOLD, INK, STEEL, LINE, FOG, DISPLAY_FONT } from "./Landingtokens";
-import { Eyebrow } from "./Landingprimitives";
+import { GOLD, INK, STEEL, LINE, FOG, DISPLAY_FONT } from "../utils/Landingtokens";
+import { Eyebrow } from "../utils/Landingprimitives";
 
 const STEPS = [
   {

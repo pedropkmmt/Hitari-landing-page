@@ -1,4 +1,4 @@
-import { LINE, FOG, DISPLAY_FONT } from "./Landingtokens";
+import { LINE, FOG, DISPLAY_FONT } from "../utils/Landingtokens";
 import { LogoMark } from "./Landingnavbar";
 
 const FOOTER_LINKS = [

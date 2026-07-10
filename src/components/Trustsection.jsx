@@ -1,10 +1,6 @@
-/**
- * TrustSection — the "why teams switch" argument: role-scoped access,
- * evidence provenance, audit-ready exports, and the portfolio risk picture.
- */
 import { CheckCircle2 } from "lucide-react";
-import { GOLD, LINE, FOG, DISPLAY_FONT } from "./Landingtokens";
-import { Eyebrow } from "./Landingprimitives";
+import { GOLD, LINE, FOG, DISPLAY_FONT } from "../utils/Landingtokens";
+import { Eyebrow } from "../utils/Landingprimitives";
 
 const REASONS = [
   [

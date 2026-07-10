@@ -1,16 +1,3 @@
-/**
- * InspectionTower — the landing page's signature 3D element (three.js).
- *
- * A wireframe tower of stacked floor slabs with a gold "inspection sweep"
- * ring that scans up and down the structure, echoing what Hitari does.
- *
- * Implementation notes:
- *   - All three.js setup lives in one useEffect; the cleanup cancels the
- *     animation frame, removes listeners, and disposes the renderer.
- *   - Respects prefers-reduced-motion: the tower holds still and the ring
- *     parks at mid-height instead of animating.
- *   - Purely decorative, so the mount div is aria-hidden.
- */
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
@@ -25,7 +12,6 @@ export default function InspectionTower() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    // --- Scene / camera / renderer ---
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       38,
@@ -44,7 +30,6 @@ export default function InspectionTower() {
     const group = new THREE.Group();
     scene.add(group);
 
-    // --- Tower: stacked floor slabs rendered as wireframe edges ---
     const slabMat = new THREE.LineBasicMaterial({
       color: 0x3b4657,
       transparent: true,
@@ -55,7 +40,7 @@ export default function InspectionTower() {
     const nodePositions = [];
 
     for (let i = 0; i < floors; i++) {
-      // Setbacks every three floors give the massing some character.
+
       const w = i < 3 ? 3.0 : i < 6 ? 2.4 : 1.8;
       const d = i < 3 ? 2.2 : i < 6 ? 1.8 : 1.4;
       const geo = new THREE.BoxGeometry(w, floorH, d);
@@ -64,7 +49,6 @@ export default function InspectionTower() {
       lines.position.y = i * floorH + floorH / 2;
       group.add(lines);
 
-      // Top corner nodes for this floor (lit gold by the Points layer below).
       const y = i * floorH + floorH;
       [
         [-w / 2, y, -d / 2],
@@ -74,7 +58,6 @@ export default function InspectionTower() {
       ].forEach((p) => nodePositions.push(p));
     }
 
-    // --- Corner nodes ---
     const nodeGeo = new THREE.BufferGeometry();
     nodeGeo.setAttribute(
       "position",
@@ -88,7 +71,6 @@ export default function InspectionTower() {
     });
     group.add(new THREE.Points(nodeGeo, nodeMat));
 
-    // --- Inspection sweep ring ---
     const ringGeo = new THREE.RingGeometry(2.35, 2.42, 64);
     const ringMat = new THREE.MeshBasicMaterial({
       color: 0xcca030,
@@ -100,10 +82,8 @@ export default function InspectionTower() {
     ring.rotation.x = -Math.PI / 2;
     group.add(ring);
 
-    // Faint ground grid to seat the structure.
     scene.add(new THREE.GridHelper(14, 20, 0x2a3342, 0x1b2230));
 
-    // --- Animation loop ---
     let frame = 0;
     let raf;
     const towerTop = floors * floorH;

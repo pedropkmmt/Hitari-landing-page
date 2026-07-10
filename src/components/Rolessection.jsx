@@ -1,11 +1,6 @@
-/**
- * RolesSection — the three-seat pitch (Admins / Insurers / Engineers),
- * mirroring the app's role-based routing. Card content lives in the ROLES
- * array so copy edits don't touch markup.
- */
 import { LayoutDashboard, ShieldCheck, HardHat, CheckCircle2 } from "lucide-react";
-import { GOLD, STEEL, LINE, FOG, DISPLAY_FONT } from "./Landingtokens";
-import { Eyebrow } from "./Landingprimitives";
+import { GOLD, STEEL, LINE, FOG, DISPLAY_FONT } from "../utils/Landingtokens";
+import { Eyebrow } from "../utils/Landingprimitives";
 
 const ROLES = [
   {

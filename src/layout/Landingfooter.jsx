@@ -15,15 +15,9 @@ export default function LandingFooter() {
         style={{ color: FOG }}
       >
         <div className="flex items-center gap-2">
-          <LogoMark size={20} />
-          <span
-            className="font-bold tracking-wide text-slate-300"
-            style={{ fontFamily: DISPLAY_FONT }}
-          >
-            HITARI
-          </span>
+         <img src="/hitari-logo.png" alt="Hitari Logo" width={80} />
         </div>
-        <p>© {new Date().getFullYear()} Hitari. Site inspection, insured.</p>
+        <p>© {new Date().getFullYear()} Hitari Project Management</p>
         <div className="flex gap-6">
           {FOOTER_LINKS.map((l) => (
             <a key={l.href} href={l.href} className="hover:text-slate-200 transition-colors">

@@ -33,13 +33,7 @@ export default function LandingNavbar() {
     >
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="#" className="flex items-center gap-2.5" aria-label="Hitari home">
-          <LogoMark />
-          <span
-            className="text-lg font-extrabold tracking-wide text-slate-100"
-            style={{ fontFamily: DISPLAY_FONT }}
-          >
-            HITARI
-          </span>
+         <img src="/hitari-logo.png" alt="Hitari Logo" width={80} />
         </a>
 
         {/* Desktop links */}
